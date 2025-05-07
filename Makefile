@@ -38,4 +38,102 @@ app-install:
 
 # Instalacja zależności Vue.js
 front-install:
-	docker-compose exec frontend npm install 
+	docker-compose exec frontend npm install
+
+# Instalacja wszystkich zależności (Laravel + Vue.js)
+install: build up
+	@echo "Waiting for containers to be ready..."
+	@sleep 5
+	@echo "Installing Laravel dependencies..."
+	@make app-install
+	@echo "Installing Vue.js dependencies..."
+	@make front-install
+	@echo "Setting up Laravel..."
+	@make app-key
+	@make app-storage-link
+	@make db-migrate
+	@echo "Installation completed!"
+
+# Uruchomienie testów Laravel
+app-test:
+	docker-compose exec app php artisan test
+
+# Uruchomienie testów Vue.js
+front-test:
+	docker-compose exec frontend npm run test
+
+# Uruchomienie wszystkich testów
+test: app-test front-test
+
+# Uruchomienie lintera Vue.js
+front-lint:
+	docker-compose exec frontend npm run lint
+
+# Uruchomienie builda Vue.js
+front-build:
+	docker-compose exec frontend npm run build
+
+# Uruchomienie dev serwera Vue.js
+front-dev:
+	docker-compose exec frontend npm run dev
+
+# Database operations
+db-migrate:
+	docker-compose exec app php artisan migrate
+
+db-seed:
+	docker-compose exec app php artisan db:seed
+
+db-fresh:
+	docker-compose exec app php artisan migrate:fresh --seed
+
+# Laravel specific commands
+app-cache-clear:
+	docker-compose exec app php artisan cache:clear
+
+app-config-cache:
+	docker-compose exec app php artisan config:cache
+
+app-route-cache:
+	docker-compose exec app php artisan route:cache
+
+app-view-cache:
+	docker-compose exec app php artisan view:cache
+
+# Generate application key if not set
+app-key:
+	docker-compose exec app php artisan key:generate
+
+# Optimize Laravel
+app-optimize:
+	docker-compose exec app php artisan optimize
+
+# Show Laravel logs
+app-logs:
+	docker-compose exec app tail -f storage/logs/laravel.log
+
+# Create storage link
+app-storage-link:
+	docker-compose exec app php artisan storage:link
+
+# Development helpers
+dev: up
+	@echo "Starting development environment..."
+	@make front-dev
+
+# Production helpers
+prod-build: front-build
+	@echo "Building for production..."
+	@make app-optimize
+
+# Docker helpers
+docker-prune:
+	docker system prune -f
+
+docker-clean: clean docker-prune
+	@echo "Docker environment cleaned"
+
+# Health check
+health:
+	@echo "Checking services health..."
+	@docker-compose ps 

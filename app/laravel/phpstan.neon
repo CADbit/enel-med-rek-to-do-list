@@ -1,0 +1,19 @@
+includes:
+    - vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - app
+        - routes
+        - config
+        - database
+        - tests
+    excludePaths:
+        - storage/*
+        - vendor/*
+        - bootstrap/cache/*
+    parallel:
+        processTimeout: 720.0
+        jobSize: 100
+    tmpDir: storage/framework/cache/phpstan 

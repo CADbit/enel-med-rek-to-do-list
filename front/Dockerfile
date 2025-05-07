@@ -2,16 +2,16 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Utworzenie nowego projektu Vue.js
-RUN npm create vite@latest . -- --template vue
+# Kopiujemy pliki package.json i package-lock.json (jeśli istnieje)
+COPY package*.json ./
 
 # Instalacja zależności
 RUN npm install
 
-COPY package*.json ./
-
+# Kopiujemy resztę plików projektu
 COPY . .
 
 EXPOSE 5173
 
-CMD ["npm", "run", "dev"] 
+# Uruchamiamy aplikację w trybie deweloperskim z hostem 0.0.0.0
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"] 
