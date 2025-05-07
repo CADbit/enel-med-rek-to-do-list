@@ -40,8 +40,17 @@ app-install:
 front-install:
 	docker-compose exec frontend npm install
 
+# Copy environment file
+env-copy:
+	@if [ ! -f .env ]; then \
+		cp .env.example .env; \
+		echo "Created .env file from .env.example"; \
+	else \
+		echo ".env file already exists"; \
+	fi
+
 # Instalacja wszystkich zależności (Laravel + Vue.js)
-install: build up
+install: env-copy build up
 	@echo "Waiting for containers to be ready..."
 	@sleep 5
 	@echo "Installing Laravel dependencies..."
