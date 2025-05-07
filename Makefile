@@ -32,7 +32,11 @@ stop: down
 	@echo "Application stopped."
 
 # Pierwsza instalacja (pełna konfiguracja)
-first-install: env-copy build up
+first-install: env-copy
+	@echo "Building containers..."
+	@docker-compose build
+	@echo "Starting containers..."
+	@docker-compose up -d
 	@echo "Waiting for containers to be ready..."
 	@sleep 5
 	@echo "Installing Laravel dependencies..."
@@ -66,10 +70,16 @@ front-install:
 # Copy environment file
 env-copy:
 	@if [ ! -f .env ]; then \
-		cp .env.example .env; \
-		echo "Created .env file from .env.example"; \
+		cp app/laravel/.env.example .env; \
+		echo "Created .env file from app/laravel/.env.example"; \
 	else \
 		echo ".env file already exists"; \
+	fi
+	@if [ ! -f app/laravel/.env ]; then \
+		cp app/laravel/.env.example app/laravel/.env; \
+		echo "Created app/laravel/.env file from app/laravel/.env.example"; \
+	else \
+		echo "app/laravel/.env file already exists"; \
 	fi
 
 # Instalacja wszystkich zależności (Laravel + Vue.js)
