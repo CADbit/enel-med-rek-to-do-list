@@ -1,4 +1,4 @@
-version: '3.8'
+version: '2.4'
 
 services:
   # Backend Laravel
@@ -13,11 +13,6 @@ services:
       - ./app/laravel:/var/www
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "php", "artisan", "--version"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   # Frontend Vue.js
   frontend:
@@ -33,11 +28,6 @@ services:
       - "5173:5173"
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5173"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   # Nginx
   nginx:
@@ -51,16 +41,9 @@ services:
       - ./docker/nginx:/etc/nginx/conf.d/
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:80"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     depends_on:
-      app:
-        condition: service_healthy
-      frontend:
-        condition: service_healthy
+      - app
+      - frontend
 
   # MySQL
   db:
@@ -78,11 +61,6 @@ services:
       - "3306:3306"
     networks:
       - app-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
 networks:
   app-network:

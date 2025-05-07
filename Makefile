@@ -2,27 +2,27 @@
 
 # Uruchomienie kontenerów
 up:
-	docker-compose up -d
+	docker compose up -d
 
 # Zatrzymanie kontenerów
 down:
-	docker-compose down
+	docker compose down
 
 # Zbudowanie kontenerów
 build:
-	docker-compose build
+	docker compose build
 
 # Restart kontenerów
 restart:
-	docker-compose restart
+	docker compose restart
 
 # Wyświetlenie logów
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 # Czyszczenie (usunięcie kontenerów, wolumenów i obrazów)
 clean:
-	docker-compose down -v --rmi all
+	docker compose down -v --rmi all
 
 # Uruchomienie i zatrzymanie aplikacji (bez migracji i seedów)
 run: up
@@ -34,9 +34,9 @@ stop: down
 # Pierwsza instalacja (pełna konfiguracja)
 first-install: env-copy
 	@echo "Building containers..."
-	@docker-compose build
+	@docker compose build
 	@echo "Starting containers..."
-	@docker-compose up -d
+	@docker compose up -d
 	@echo "Waiting for containers to be ready..."
 	@sleep 5
 	@echo "Installing Laravel dependencies..."
@@ -53,19 +53,19 @@ first-install: env-copy
 
 # Wejście do kontenera Laravel
 app-bash:
-	docker-compose exec app bash
+	docker compose exec app bash
 
 # Wejście do kontenera Vue.js
 front-bash:
-	docker-compose exec frontend sh
+	docker compose exec frontend sh
 
 # Instalacja zależności Laravel
 app-install:
-	docker-compose exec app composer install
+	docker compose exec app composer install
 
 # Instalacja zależności Vue.js
 front-install:
-	docker-compose exec frontend npm install
+	docker compose exec frontend npm install
 
 # Copy environment file
 env-copy:
@@ -100,65 +100,65 @@ install: env-copy build up
 
 # Uruchomienie testów Laravel
 app-test:
-	docker-compose exec app php artisan test
+	docker compose exec app php artisan test
 
 # Uruchomienie testów Vue.js
 front-test:
-	docker-compose exec frontend npm run test
+	docker compose exec frontend npm run test
 
 # Uruchomienie wszystkich testów
 test: app-test front-test
 
 # Uruchomienie lintera Vue.js
 front-lint:
-	docker-compose exec frontend npm run lint
+	docker compose exec frontend npm run lint
 
 # Uruchomienie builda Vue.js
 front-build:
-	docker-compose exec frontend npm run build
+	docker compose exec frontend npm run build
 
 # Uruchomienie dev serwera Vue.js
 front-dev:
-	docker-compose exec frontend npm run dev
+	docker compose exec frontend npm run dev
 
 # Database operations
 db-migrate:
-	docker-compose exec app php artisan migrate
+	docker compose exec app php artisan migrate
 
 db-seed:
-	docker-compose exec app php artisan db:seed
+	docker compose exec app php artisan db:seed
 
 db-fresh:
-	docker-compose exec app php artisan migrate:fresh --seed
+	docker compose exec app php artisan migrate:fresh --seed
 
 # Laravel specific commands
 app-cache-clear:
-	docker-compose exec app php artisan cache:clear
+	docker compose exec app php artisan cache:clear
 
 app-config-cache:
-	docker-compose exec app php artisan config:cache
+	docker compose exec app php artisan config:cache
 
 app-route-cache:
-	docker-compose exec app php artisan route:cache
+	docker compose exec app php artisan route:cache
 
 app-view-cache:
-	docker-compose exec app php artisan view:cache
+	docker compose exec app php artisan view:cache
 
 # Generate application key if not set
 app-key:
-	docker-compose exec app php artisan key:generate
+	docker compose exec app php artisan key:generate
 
 # Optimize Laravel
 app-optimize:
-	docker-compose exec app php artisan optimize
+	docker compose exec app php artisan optimize
 
 # Show Laravel logs
 app-logs:
-	docker-compose exec app tail -f storage/logs/laravel.log
+	docker compose exec app tail -f storage/logs/laravel.log
 
 # Create storage link
 app-storage-link:
-	docker-compose exec app php artisan storage:link
+	docker compose exec app php artisan storage:link
 
 # Development helpers
 dev: up
@@ -180,4 +180,4 @@ docker-clean: clean docker-prune
 # Health check
 health:
 	@echo "Checking services health..."
-	@docker-compose ps 
+	@docker compose ps 
