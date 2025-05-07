@@ -25,12 +25,64 @@ git clone [URL_REPOZYTORIUM]
 cd enel-med-rek
 ```
 
-2. Uruchom instalację:
+2. Pierwsza instalacja (wykonaj tylko raz):
 ```bash
-make install
+make first-install
 ```
 
-3. Aplikacja będzie dostępna pod adresem:
+3. Uruchomienie aplikacji (po pierwszej instalacji):
+```bash
+make run
+```
+
+4. Zatrzymanie aplikacji:
+```bash
+make stop
+```
+
+## Dostępne Komendy Make
+
+### Podstawowe Operacje
+- `make run` - Uruchomienie aplikacji
+- `make stop` - Zatrzymanie aplikacji
+- `make restart` - Restart aplikacji
+- `make logs` - Wyświetlenie logów
+
+### Instalacja i Konfiguracja
+- `make first-install` - Pełna instalacja (tylko przy pierwszym uruchomieniu)
+- `make clean` - Czyszczenie środowiska (usuwa kontenery, wolumeny i obrazy)
+- `make build` - Zbudowanie kontenerów
+
+### Wejście do Kontenerów
+- `make app-bash` - Wejście do kontenera Laravel
+- `make front-bash` - Wejście do kontenera Vue.js
+
+### Baza Danych
+- `make db-migrate` - Wykonanie migracji
+- `make db-seed` - Wypełnienie bazy danymi testowymi
+- `make db-fresh` - Reset bazy danych z danymi testowymi
+
+### Laravel
+- `make app-cache-clear` - Czyszczenie cache
+- `make app-config-cache` - Cache konfiguracji
+- `make app-route-cache` - Cache routingu
+- `make app-view-cache` - Cache widoków
+- `make app-optimize` - Optymalizacja Laravel
+- `make app-logs` - Wyświetlenie logów Laravel
+
+### Vue.js
+- `make front-dev` - Uruchomienie serwera deweloperskiego
+- `make front-build` - Zbudowanie aplikacji Vue.js
+- `make front-lint` - Sprawdzenie kodu linterem
+
+### Testy
+- `make test` - Uruchomienie wszystkich testów
+- `make app-test` - Testy Laravel
+- `make front-test` - Testy Vue.js
+
+## Dostęp do Aplikacji
+
+Po uruchomieniu aplikacja będzie dostępna pod adresami:
 - Frontend: http://localhost:8000
 - API: http://localhost:8000/api
 - Vue Dev Server: http://localhost:5173 (tylko w trybie deweloperskim)

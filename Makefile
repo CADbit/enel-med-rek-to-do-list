@@ -1,4 +1,4 @@
-.PHONY: up down build restart logs clean
+.PHONY: up down build restart logs clean run stop first-install
 
 # Uruchomienie kontenerów
 up:
@@ -23,6 +23,29 @@ logs:
 # Czyszczenie (usunięcie kontenerów, wolumenów i obrazów)
 clean:
 	docker-compose down -v --rmi all
+
+# Uruchomienie i zatrzymanie aplikacji (bez migracji i seedów)
+run: up
+	@echo "Application started. Use 'make stop' to stop it."
+
+stop: down
+	@echo "Application stopped."
+
+# Pierwsza instalacja (pełna konfiguracja)
+first-install: env-copy build up
+	@echo "Waiting for containers to be ready..."
+	@sleep 5
+	@echo "Installing Laravel dependencies..."
+	@make app-install
+	@echo "Installing Vue.js dependencies..."
+	@make front-install
+	@echo "Setting up Laravel..."
+	@make app-key
+	@make app-storage-link
+	@make db-migrate
+	@echo "Seeding database..."
+	@make db-seed
+	@echo "First installation completed! You can now use 'make run' to start the application."
 
 # Wejście do kontenera Laravel
 app-bash:
