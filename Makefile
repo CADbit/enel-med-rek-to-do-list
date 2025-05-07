@@ -52,6 +52,8 @@ install: build up
 	@make app-key
 	@make app-storage-link
 	@make db-migrate
+	@echo "Seeding database..."
+	@make db-seed
 	@echo "Installation completed!"
 
 # Uruchomienie testów Laravel

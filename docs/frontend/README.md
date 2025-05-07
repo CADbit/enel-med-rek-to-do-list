@@ -100,39 +100,13 @@ Plik `.env` w katalogu `front/` powinien zawierać:
 VITE_API_URL=http://localhost:8000/api
 ```
 
-### Uwierzytelnianie
-
-API wymaga uwierzytelnienia poprzez token JWT. Token powinien być przekazywany w nagłówku `Authorization`:
+### Konfiguracja Axios
 
 ```javascript
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
+    'Content-Type': 'application/json'
   }
 })
 ```
-
-## Rozwiązywanie Problemów
-
-W przypadku problemów z dostępem do API:
-
-1. Sprawdź, czy backend jest uruchomiony:
-```bash
-make health
-```
-
-2. Sprawdź logi backendu:
-```bash
-make logs
-```
-
-3. Sprawdź, czy dokumentacja API jest dostępna pod adresem `http://localhost:8000/api/documentation`
-
-4. Sprawdź konfigurację CORS w backendzie
-
-5. Sprawdź logi frontendu:
-```bash
-docker-compose logs frontend
-``` 
